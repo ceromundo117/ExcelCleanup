@@ -1,0 +1,14 @@
+import pandas as pd
+import openpyxl as op
+
+#usecols=['column'] is the format to pick the columns needed
+
+df = pd.read_excel('GS_Excel_Export.xlsx',  usecols=['Account Number', 'Name'])
+
+#use this format to write, save, and remove index column
+#df = df.to_excel('GS_Excel_Export2.xlsx', index=False)
+df=df.drop_duplicates(keep='first')
+
+
+
+print(df)
