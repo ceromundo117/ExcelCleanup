@@ -2,32 +2,44 @@ import pandas as pd
 import openpyxl as op
 from datetime import date
 
+#variable date
 today = date.today()
 today = today.strftime("%m.%d.%y")
 
-#remember that input function converts input into a string
-print('.xlsx is the standard excel file format please save your files in that format')
-#accutrak_file = input('Enter Accutrak Excel file names: ')
+def excel():
+  print('.xlsx is the standard excel file format please save your files in that format\n'
+      'Your name must be the same as the file name\nNo_spaces_only_underscores')
+  
+  Accutrac_Item_Export = input('Enter Accutrak Excel file name: ')
+  Accutrac_Item_Export = Accutrac_Item_Export.replace(" ", "_")
+    for character in Accutrac_Item_Export:
+      if character[-1] = "_":
+      print("You had a space at the end! Try again.")
+        break
+    else:
+      continue
 
-gs_excel = input('Enter Global Search Excel file names: ')
+gs_excel = input('Enter Global Search Excel file name: ')
+
+# master = pd.read_excel('Accutrac_Item_Export.xlsx', usecols=['Accutrac_Barcode', 'Major_Desc'])
+# master['Accutrac_Barcode'] = master['Accutrac_Barcode'] // 10
+# master = master.sort_values(by=['Accutrac_Barcode'])
+# master.to_excel(today + '.xlsx', index = False)
 
 # preparing export data
 excel = pd.read_excel(gs_excel +'.xlsx')
 excel = excel.drop_duplicates(keep='first')
 excel.to_excel('dummy.xlsx', index = False)
-# master = pd.read_excel('Accutrak_Master_File.xlsx', usecols=['Account Number', 'Name'])
-# master['Account Number'] = master['Account Number'] // 10
-# master = master.sort_values(by=['Account Number'])
-# #master.to_excel(today + '.xlsx', index = False)
-#
-#
+
+
+
 # combine_two = [master, excel]
 # combined_comparison = pd.concat(combine_two)
 #
-# uniques = combined_comparison.drop_duplicates("Account Number", keep=False)
+# uniques = combined_comparison.drop_duplicates("Accutrac_Barcode", keep=False)
 # excel_and_uniques = [excel, uniques]
 # combined = pd.concat(excel_and_uniques)
 #
 # clean_excel = combined.drop_duplicates(keep=False, inplace=False)
-# clean_excel = clean_excel.sort_values(by=['Account Number'])
-#clean_excel.to_excel(("Title Application " + today + ".xlsx"), index=False)
+# clean_excel = clean_excel.sort_values(by=['Accutrac_Barcode'])
+# clean_excel.to_excel(("Title Application " + today + ".xlsx"), index=False)
