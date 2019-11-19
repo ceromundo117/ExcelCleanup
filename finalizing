@@ -5,28 +5,29 @@ from datetime import date
 today = date.today()
 today = today.strftime("%m.%d.%y")
 
+#remember that input function converts input into a string
+print('.xlsx is the standard excel file format please save your files in that format')
+#accutrak_file = input('Enter Accutrak Excel file names: ')
 
-#clean = input ('Enter Accutrak Excel and Global Search Excel file names: \n\nAccutrak must be (DD.MM.YY.xlsx)\n\nGlobal Search must be (Title Application DD.MM.YY.xlxs)\n\n(.xlsx is the standard excel file format but must be included with the name)')
+gs_excel = input('Enter Global Search Excel file names: ')
 
 # preparing export data
-excel = pd.read_excel('GS_Excel_Export.xlsx')
-excel = excel.drop_duplicates(keep = 'first')
-
-
-master = pd.read_excel('Master_File.xlsx',  usecols=['Account Number', 'Name'])
-master['Account Number'] = master['Account Number'] // 10
-master = master.sort_values(by = ['Account Number'])
-#master.to_excel(today + '.xlsx', index = False)
-
-
-combine_two = [master, excel]
-combined_comparison = pd.concat(combine_two)
-
-
-uniques = combined_comparison.drop_duplicates("Account Number", keep = False)
-excel_and_uniques = [excel, uniques]
-combined = pd.concat(excel_and_uniques)
-
-clean_excel = combined.drop_duplicates(keep = False, inplace = False)
-clean_excel = clean_excel.sort_values(by = ['Account Number'])
-clean_excel.to_excel(("Title Application " + today + ".xlsx"), index = False)
+excel = pd.read_excel(gs_excel +'.xlsx')
+excel = excel.drop_duplicates(keep='first')
+excel.to_excel('dummy.xlsx', index = False)
+# master = pd.read_excel('Accutrak_Master_File.xlsx', usecols=['Account Number', 'Name'])
+# master['Account Number'] = master['Account Number'] // 10
+# master = master.sort_values(by=['Account Number'])
+# #master.to_excel(today + '.xlsx', index = False)
+#
+#
+# combine_two = [master, excel]
+# combined_comparison = pd.concat(combine_two)
+#
+# uniques = combined_comparison.drop_duplicates("Account Number", keep=False)
+# excel_and_uniques = [excel, uniques]
+# combined = pd.concat(excel_and_uniques)
+#
+# clean_excel = combined.drop_duplicates(keep=False, inplace=False)
+# clean_excel = clean_excel.sort_values(by=['Account Number'])
+#clean_excel.to_excel(("Title Application " + today + ".xlsx"), index=False)
