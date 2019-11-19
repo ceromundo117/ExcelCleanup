@@ -15,3 +15,46 @@ df=df.drop_duplicates(keep='first')
 
 
 print(df)
+
+
+Final Code
+import pandas as pd
+import openpyxl as op
+
+#usecols=['column'] is the format to pick the columns needed
+
+excel = pd.read_excel('GS_Excel_Export.xlsx')
+
+# use this format to write, save, and remove index column
+# df = df.to_excel('GS_Excel_Export2.xlsx', index=False)
+
+excel = excel.drop_duplicates(keep = 'first')
+# keeps the first copy of the duplicates
+# print(df)
+
+master = pd.read_excel('Master_File.xlsx',  usecols=['Account Number', 'Name'])
+
+master['Account Number'] = master['Account Number'] // 10
+#remove 13th digit
+master.sort_values(by = ['Account Number'])
+
+master.to_excel("Clean_Master.xlsx", index = False)
+
+
+combine = [master, excel]
+combined = pd.concat(combine)
+
+
+#combined.to_excel("Test.xlsx", index = False)
+combined_uniques = combined.drop_duplicates(keep = False)
+
+comparison = [combined_uniques, excel]
+
+clean_excel = pd.concat(comparison)
+
+clean_excel = clean_excel.drop_duplicates(keep = False)
+
+clean_excel.sort_values(by = ['Account Number'])
+
+
+clean_excel.to_excel("Clean_Export.xlsx", index = False)
