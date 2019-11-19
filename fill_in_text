@@ -3,26 +3,6 @@ import openpyxl as op
 
 #usecols=['column'] is the format to pick the columns needed
 
-df = pd.read_excel('GS_Excel_Export.xlsx',  usecols=['Account Number', 'Name'])
-
-#use this format to write, save, and remove index column
-#df = df.to_excel('GS_Excel_Export2.xlsx', index=False)
-df=df.drop_duplicates(keep='first')
-#show full dataframe
-#with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
-    print(df)
-
-
-
-print(df)
-
-
-Final Code
-import pandas as pd
-import openpyxl as op
-
-#usecols=['column'] is the format to pick the columns needed
-
 excel = pd.read_excel('GS_Excel_Export.xlsx')
 
 # use this format to write, save, and remove index column
@@ -30,31 +10,32 @@ excel = pd.read_excel('GS_Excel_Export.xlsx')
 
 excel = excel.drop_duplicates(keep = 'first')
 # keeps the first copy of the duplicates
-# print(df)
+
 
 master = pd.read_excel('Master_File.xlsx',  usecols=['Account Number', 'Name'])
 
 master['Account Number'] = master['Account Number'] // 10
 #remove 13th digit
-master.sort_values(by = ['Account Number'])
+master = master.sort_values(by = ['Account Number'])
 
 master.to_excel("Clean_Master.xlsx", index = False)
 
 
-combine = [master, excel]
-combined = pd.concat(combine)
+combine_two = [master, excel]
+combined_comparison = pd.concat(combine_two)
 
 
 #combined.to_excel("Test.xlsx", index = False)
-combined_uniques = combined.drop_duplicates(keep = False)
+uniques = combined_comparison.drop_duplicates("Account Number", keep = False)
+# I had a consistent error due to the fact that I didn't specify the column to compare all
 
-comparison = [combined_uniques, excel]
+excel_and_uniques = [excel, uniques]
 
-clean_excel = pd.concat(comparison)
+combined = pd.concat(excel_and_uniques)
 
-clean_excel = clean_excel.drop_duplicates(keep = False)
+clean_excel = combined.drop_duplicates(keep = False, inplace = False)
 
-clean_excel.sort_values(by = ['Account Number'])
-
+clean_excel = clean_excel.sort_values(by = ['Account Number'])
+print(clean_excel)
 
 clean_excel.to_excel("Clean_Export.xlsx", index = False)
