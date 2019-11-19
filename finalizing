@@ -1,41 +1,32 @@
 import pandas as pd
 import openpyxl as op
+from datetime import date
 
-#usecols=['column'] is the format to pick the columns needed
+today = date.today()
+today = today.strftime("%m.%d.%y")
 
+
+#clean = input ('Enter Accutrak Excel and Global Search Excel file names: \n\nAccutrak must be (DD.MM.YY.xlsx)\n\nGlobal Search must be (Title Application DD.MM.YY.xlxs)\n\n(.xlsx is the standard excel file format but must be included with the name)')
+
+# preparing export data
 excel = pd.read_excel('GS_Excel_Export.xlsx')
-
-# use this format to write, save, and remove index column
-# df = df.to_excel('GS_Excel_Export2.xlsx', index=False)
-
 excel = excel.drop_duplicates(keep = 'first')
-# keeps the first copy of the duplicates
 
 
 master = pd.read_excel('Master_File.xlsx',  usecols=['Account Number', 'Name'])
-
 master['Account Number'] = master['Account Number'] // 10
-#remove 13th digit
 master = master.sort_values(by = ['Account Number'])
-
-master.to_excel("Clean_Master.xlsx", index = False)
+#master.to_excel(today + '.xlsx', index = False)
 
 
 combine_two = [master, excel]
 combined_comparison = pd.concat(combine_two)
 
 
-#combined.to_excel("Test.xlsx", index = False)
 uniques = combined_comparison.drop_duplicates("Account Number", keep = False)
-# I had a consistent error due to the fact that I didn't specify the column to compare all
-
 excel_and_uniques = [excel, uniques]
-
 combined = pd.concat(excel_and_uniques)
 
 clean_excel = combined.drop_duplicates(keep = False, inplace = False)
-
 clean_excel = clean_excel.sort_values(by = ['Account Number'])
-print(clean_excel)
-
-clean_excel.to_excel("Clean_Export.xlsx", index = False)
+clean_excel.to_excel(("Title Application " + today + ".xlsx"), index = False)
