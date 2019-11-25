@@ -17,18 +17,18 @@ master = pd.read_excel(accutrac_export + '.xlsx', usecols=['Accutrac_Barcode', '
 master['Accutrac_Barcode'] = master['Accutrac_Barcode'] // 10
 master = master.sort_values(by=['Accutrac_Barcode'])
 master.to_excel(today + '.xlsx', index=False)
-master2 = master[['Accutrac_Barcode']]
+master_account_num = master[['Accutrac_Barcode']]
 
 excel = pd.read_excel(gs_excel + '.xlsx', usecols=0, names=['Accutrac_Barcode'])
 excel = excel.drop_duplicates('Accutrac_Barcode', keep='first', inplace=False)
-excel2 = excel[['Accutrac_Barcode']]
+excel_account_num = excel[['Accutrac_Barcode']]
 
-combined_comparison = master2.append(excel2)
+combined_comparison = master_account_num.append(excel_account_num)
 
 uniques = combined_comparison.drop_duplicates('Accutrac_Barcode', keep=False)
 uniques.to_excel('Unique_Acts' + '.xlsx', index=False)
 
-final_excel = uniques.append(excel2)
-final_excel = final_excel.sort_values(by=['Accutrac_Barcode'])
-final = final_excel.drop_duplicates('Accutrac_Barcode', keep=False, inplace=False)
+clean_global = uniques.append(excel_account_num)
+clean_global = clean_global.sort_values(by=['Accutrac_Barcode'])
+final = clean_global.drop_duplicates('Accutrac_Barcode', keep=False, inplace=False)
 final.to_excel('Title Application Excel ' + today + '.xlsx', index=False)
